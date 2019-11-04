@@ -1,0 +1,101 @@
+/* ####################### BODY STYLE ####################### */
+body {
+    margin: auto;
+    background: white;
+    border-radius: 10px;
+    border: solid black;
+    border-width: thin;
+
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    -webkit-box-shadow: 0 0 9px gray;
+    box-shadow: 0 0 18px gray;
+}
+
+/* ####################### BEGIN OF HEADER ####################### */
+.row .header_link {  padding-left: 70px; }
+
+.header, .menu {
+    background-color: lightblue;
+}
+
+.row input[type=text], input[type=password] {
+    background-color: #f8f8f8;
+    width: 130px;
+    border-radius: 5px;
+}
+
+/* ####################### BEGIN OF FOOTER ####################### */
+.footer {
+    background-color: lightblue;
+}
+
+footer {
+    text-align: center;
+}
+footer ol{   margin: 5px;  }
+
+footer li{
+    display: inline;
+    list-style-type: none;
+    border-right: 1px solid #006699;
+    padding: 0 .75em;
+    color: white;
+    vertical-align: middle;
+}
+
+footer li:last-child  { border: 0; }
+footer li a{  text-decoration: none;  color: #FFF8DC;  }
+
+/* ####################### BEGIN OF HOME PAGE CONTENT CONTAINER ####################### */
+
+/* Main container */
+.container {
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-top: 1px solid;
+}
+
+.content_block {
+    background-color: lightgray;
+}
+
+/* Product Description block */
+.product_description {
+    width: 600px;
+}
+.table tr:nth-child(even) {background-color: #f2f2f2;} /* Zebra striping */
+.table th { background-color: CornflowerBlue ; }
+.table tr:hover { background-color: LemonChiffon ;  }  /* Hover over table rows */
+
+/* Posts block */
+.posts {
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+
+    margin-left: 20px;
+    width: 350px;
+
+    border: 3px solid #555555;
+}
+
+/* ####################### BEGIN OF CONTACT PAGE ####################### */
+/* Product Description block */
+.contact_form {
+    width: 500px;
+}
+
+.contactpage_row {
+    background-color: lightgray;
+    padding-bottom: 20px;
+    padding-top:  20px;
+    padding-left: 20px;
+}
