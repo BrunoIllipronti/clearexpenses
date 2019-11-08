@@ -1,3 +1,11 @@
+<?php
+
+    session_start();
+    //$_SESSION["User"] = [];
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -19,20 +27,42 @@
                 </div>
 
                 <div class="col-lg">
-                    <form name ="login" id="loginform" action="#">
-                        <label for="login">Login: </label>
-                        <input type="text" name="login" id="login" placeholder="Your user..."/>
-                        <label for="pw">Password: </label>
-                        <input type="password" name="pw" id="pw"   placeholder="Password..."/>
 
-                        <input type="button" id="loginbtn" value="Login"/>
+
+                    <form name ="login" id="loginform" action="process_post.php" method="post">
+                        <?php
+                            if (isset($_SESSION["User"])){ ?>
+                                <p><?= $_SESSION["User"]["name"]  ?></p><?php
+                                $img = $_SESSION["User"]["imagepath"];
+                                ?>
+
+                                <input type="submit" id="loginbtn" name="command" value="Logoff"/>
+                                <?php
+                            }
+                            else {
+                                $img = "imgs/user.png";
+                                ?>
+                                <label for="login">Login: </label>
+                                <input type="text" name="login" id="login" placeholder="Your user..."/>
+                                <label for="pw">Password: </label>
+                                <input type="password" name="pw" id="pw"   placeholder="Password..."/>
+
+                                <input type="submit" id="loginbtn" name="command" value="Login"/>
+                                <?php
+                            }
+                        ?>
+
+
                         <!--
                         <p id="line"><p id="usererror">User or password incorrect!</p>
                         <a id="forgot" href="contact.html">Forgot your password?</a><p>  -->
-                        <a id="link" href="index.php">
-                            <img src="imgs/user.png" alt="user">
+                        <a id="link" href="account.php">
+                            <img src="<?php echo $img;?>" alt="user" width="45" height="45">
                         </a>
                     </form>
+
+
+
                 </div>
             </div>
         </div>

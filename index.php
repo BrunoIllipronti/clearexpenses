@@ -1,10 +1,10 @@
 <?php
-	require 'connect.php'; 
-	
+    require 'connect.php';
 	$query = "SELECT postid, userid, title, postdate, postcontent FROM posts ORDER BY postdate DESC";
 	$statement = $db->prepare($query); // Returns a PDOStatement object.
 	$statement->execute(); // The query is now executed.
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -104,5 +104,6 @@
         </div>
 
         <?php include 'footer.php';?>
+
     </body>
 </html>

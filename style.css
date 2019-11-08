@@ -19,7 +19,7 @@ body {
 }
 
 /* ####################### BEGIN OF HEADER ####################### */
-.row .header_link {  padding-left: 70px; }
+.row .header_link {  padding-left: 50px; }
 
 .header, .menu {
     background-color: lightblue;
