@@ -1,12 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8"/>
-		<link rel="stylesheet" href="style.css">
-		<title>ClearExpense Project - Main Page</title>
-	</head>
-
-    <body>
+<head>
+    <title>ClearExpense Project - Main Page</title>
+</head>
         <footer>
             <div class="container">
                 <div class="row footer justify-content-center">
@@ -22,5 +17,4 @@
                 </div>
             </div>
         </footer>
-	</body>
 </html>

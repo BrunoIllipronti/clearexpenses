@@ -1,8 +1,6 @@
 <?php
 
     session_start();
-    //$_SESSION["User"] = [];
-
 
 ?>
 
@@ -19,52 +17,62 @@
 
 	<body>
         <div class="container">
-            <div class="row header justify-content-center">
-                <div class="col-lg">
-                    <a id="link" href="index.php">
+            <div class="row header align-items-center">
+
+                <!-- Logo column -->
+                <div class="col-5">
+                    <a href="index.php">
                         <img src="imgs/logo.png" alt="logo">
                     </a>
                 </div>
 
-                <div class="col-lg">
-
-
+                <!-- Form column -->
+                <div class="col justify-content-end">
                     <form name ="login" id="loginform" action="process_post.php" method="post">
-                        <?php
-                            if (isset($_SESSION["User"])){ ?>
-                                <p><?= $_SESSION["User"]["name"]  ?></p><?php
-                                $img = $_SESSION["User"]["imagepath"];
-                                ?>
 
-                                <input type="submit" id="loginbtn" name="command" value="Logoff"/>
-                                <?php
-                            }
-                            else {
-                                $img = "imgs/user.png";
-                                ?>
-                                <label for="login">Login: </label>
-                                <input type="text" name="login" id="login" placeholder="Your user..."/>
-                                <label for="pw">Password: </label>
-                                <input type="password" name="pw" id="pw"   placeholder="Password..."/>
+                         <?php  // If User is Set
+                         if (isset($_SESSION["User"])){
 
-                                <input type="submit" id="loginbtn" name="command" value="Login"/>
-                                <?php
-                            }
-                        ?>
+                             // But it has a login error...
+                             if($_SESSION["User"] == "UserError"){
+                                 $img = "imgs/user.png";
+                                 ?>
+                                 <p style="color:red;">User or password incorrect!
+                                 <input type="submit" id="loginbtn" name="command" value="Try Again"/></p>
+                             <?php
+                             } else {
+                                // If User is Valid !  ?>
+                                <p>Welcome <b><?= $_SESSION["User"]["name"]  ?></b> !
+                                <?php $img = $_SESSION["User"]["imagepath"]; ?>
 
+                                <input type="submit" id="loginbtn" name="command" value="Logoff"/></p>
+                              <?php
+                             }
+                         }
+                         else{
+                             $img = "imgs/user.png";  ?>
+                             <label for="login">Login: </label>
+                             <input type="text" name="login" id="login" placeholder="Your user..."/>
+                             <label for="pw">Password: </label>
+                             <input type="password" name="pw" id="pw"   placeholder="Password..."/>
 
-                        <!--
-                        <p id="line"><p id="usererror">User or password incorrect!</p>
-                        <a id="forgot" href="contact.html">Forgot your password?</a><p>  -->
-                        <a id="link" href="account.php">
-                            <img src="<?php echo $img;?>" alt="user" width="45" height="45">
-                        </a>
+                             <input type="submit" id="loginbtn" name="command" value="Login"/>
+                             <?php
+                         }
+                         ?>
                     </form>
-
-
-
                 </div>
+
+                <!-- Form column -->
+                <div class="col-1 align-self-end">
+                    <a href="account.php">
+                        <img src="<?php echo $img;?>" alt="user" width="45" height="45">
+                    </a>
+                </div>
+
+
             </div>
+
         </div>
 
 		<!-- Nav part -->

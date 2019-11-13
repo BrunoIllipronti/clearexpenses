@@ -3,12 +3,6 @@
     //session_start();
     //$_SESSION["User"] = [];
 
-    if (isset($_SESSION["User"])){
-        $img = $_SESSION["User"]["imagepath"];
-    }
-    else {
-        $img = "imgs/user.png";
-    }
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +14,7 @@
 </head>
 
 <body>
-    <?php include 'header.php';?>
+    <?php include 'header.php'; ?>
 
     <div class="container">
         <div class="row contactpage_row">
