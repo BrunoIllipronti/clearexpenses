@@ -30,6 +30,7 @@
 
                         <label for="phone">Phone:</label>
                         <input type="number" id="phone" class="fields" placeholder="Cel number..."/>
+                        <input type='tel' pattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: +99(99)9999-9999)'>
                         <p id="phone_error">Phone is null. Fix it !</p>
                         <br>
 
@@ -41,7 +42,7 @@
                         <label for="needs">Tell us your needs:</label>
                         <textarea placeholder="Enter your individual / company needs..." rows="4" cols="25" id="needs" ></textarea>
                     </fieldset>
-                    <input type="submit" id="sendinfo" value="Send"/>
+                    <input type="submit" id="contact" name="command" value="Contact"/>
                     <input type="reset"  id="reset"    value="Reset"/>
                 </form>
 

@@ -2,6 +2,17 @@
 
     session_start();
 
+    if (isset($_SESSION["User"])){
+        $img = $_SESSION["User"]["imagepath"];
+    }
+    else {
+        $img = "imgs/user.png";
+    }
+
+    print_r($_SESSION["User"] );
+    print_r( $_SESSION["Error"] );
+
+
 ?>
 
 <!DOCTYPE html>

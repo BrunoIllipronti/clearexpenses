@@ -1,8 +1,9 @@
 <?php
     session_start();
     print_r($_POST);
+    unset($_SESSION["Error"]);
 
-//================================================== LOG IN VALIDATIONS ==================================================
+    //================================================== LOG IN VALIDATIONS ==================================================
 	if (!empty($_POST["login"]) && !empty($_POST["pw"])){
 
 	    //  Validate Login action
@@ -44,10 +45,8 @@
         header('Location: index.php');
     }
 
-
-//================================================== ACCOUNT VALIDATIONS ==================================================
+    //================================================== ACCOUNT VALIDATIONS ==================================================
     if ( $_POST["command"] == "Edit Account" || $_POST["command"] == "Create Account" ){
-
 
         $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $lastname  = filter_input(INPUT_POST, 'lastname',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -59,42 +58,103 @@
         $validation_array = [];
 
         ##### If first name has numbers or it is null #####
-        if(1 === preg_match('~[0-9]~', $firstname) || is_null($firstname) ){
+        if( preg_match('#[\d]#', $firstname) || is_numeric($firstname[0]) || $firstname == "" ){
             array_push($validation_array, 0);
         } else {
             array_push($validation_array, 1);
         }
 
         ##### If last name has numbers or it is null #####
-        if(1 === preg_match('~[0-9]~', $lastname) || is_null($lastname) ){
+        if( preg_match('~[\d]~', $lastname) || is_numeric($lastname[0]) || $lastname == "" ){
             array_push($validation_array, 0);
         } else {
             array_push($validation_array, 1);
         }
 
         ##### Invalid email address #####
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || is_null($email) ) {
+        if ( !filter_var($email, FILTER_VALIDATE_EMAIL) || $email == "" ) {
             array_push($validation_array, 0);
         } else {
             array_push($validation_array, 1);
         }
 
-
         ##### If user starts with number or it is null #####
-        if(is_numeric($user[1]) || is_null($user) ){
+        if( $user == "" || strpos($user, ' ') !== false || is_numeric($user[0]) ){
+            array_push($validation_array, 0);
+        } else {
+            array_push($validation_array, 1);
+        }
+
+        ##### If Password has spaces or it is null #####
+        if( $pw == "" || strpos($pw, ' ') !== false ){
             array_push($validation_array, 0);
         } else {
             array_push($validation_array, 1);
         }
 
         print_r($validation_array);
-        //header('Location: index.php');
+
+        // Check if any error happened
+        foreach ($validation_array as &$value) {
+            echo "Iteration: ".$value;
+            if ($value == 0){
+                $_SESSION["Error"] = $validation_array;
+                break;
+            }
+        }
+
+        print_r($_SESSION["Error"]);
+
+        header('Location: account.php');
 
     }
 
 
+    //================================================== ACCOUNT VALIDATIONS ==================================================
+    if ( $_POST["command"] == "Edit Account" || $_POST["command"] == "Create Account" ) {
+
+        //Import PHPMailer classes into the global namespace
+        /*
+        use PHPMailer\PHPMailer\PHPMailer;
+        use PHPMailer\PHPMailer\Exception;
+
+        require_once 'vendor/autoload.php';
+        */
+
+        require 'vendor/phpmailer/phpmailer/srcPHPMailerAutoload.php';
+
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->isSMTP();
+            $mail->Host = 'smtp.mailtrap.io';  //mailtrap SMTP server
+            $mail->SMTPAuth = true;
+            $mail->Username = '33b113d3b5d5b8';   //username
+            $mail->Password = 'f69ac72b579588';   //password
+            $mail->Port = 465;                    //smtp port
+
+            $mail->setFrom('noreply@artisansweb.net', 'Artisans Web');
+            $mail->addAddress('sajid@artisansweb.net', 'Sajid');
+
+            $mail->isHTML(true);
+
+            $mail->Subject = 'Mailtrap Email';
+            $mail->Body = 'Hello User, <p>This is a test mail sent through Mailtrap SMTP</p><br>Thanks';
+
+            if (!$mail->send()) {
+                echo 'Message could not be sent.';
+                echo 'Mailer Error: ' . $mail->ErrorInfo;
+            } else {
+                echo 'Message has been sent';
+            }
+        } catch (Exception $e) {
+            echo 'Message could not be sent.';
+            echo 'Mailer Error: ' . $mail->ErrorInfo;
+        }
+    }
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
