@@ -24,35 +24,42 @@
 
         <div class="container">
             <div class="row justify-content-between">
-                <div class="col-4">
+                <div class="col-6">
 
                     <h3>My Account</h3>
-
                     <img src="<?php echo $img;?>"alt="user" width="170" height="170"><br>
 
-                    <form action="mailto:billipronti@academic.rrc.com" method="GET">
+                    <form action="process_post.php" method="post">
                         <fieldset>
                             <legend>Main Info:</legend>
 
                             <label for="name">First Name:</label>
-                            <input type="text" id="name" class="fields" placeholder="First Name..." />
-                            <p id="name_error">Name is null / or invalid (number). Fix it!</p>
+                            <input type="text" id="name" name="name" class="fields" placeholder="First Name..." />
+                            <p style="color:red;">First Name is null / or invalid (only letters). Fix it!</p>
                             <br>
 
                             <label for="lastname">Last Name:</label>
-                            <input type="text" id="lastname" class="fields" placeholder="Last Name..." />
-                            <p id="name_error">Name is null / or invalid (number). Fix it!</p>
+                            <input type="text" id="lastname" name="lastname" class="fields" placeholder="Last Name..." />
+                            <p style="color:red;">Last Name is null / or invalid (only letters). Fix it!</p>
                             <br>
 
                             <label for="title">Job Title: </label>
-                            <input type="email" id="title" class="fields" placeholder="Job Title..."/>
-                            <p id="email_error">Email is null. Fix it!</p>
-                            <br>
+                            <input type="text" id="title" name="title" class="fields" placeholder="Job Title..."/>
+                            <br><br>
 
                             <label for="email">Email:</label>
-                            <input type="text" id="email" class="fields" placeholder="Email..." />
-                            <p id="name_error">Name is null / or invalid (number). Fix it!</p>
+                            <input type="email" id="email" name="email"  class="fields" placeholder="Email..." />
+                            <p style="color:red;">Email is null / or invalid. Fix it!</p>
                             <br>
+
+                            <label for="user">User:</label>
+                            <input type="text" id="user" name="user" class="fields" placeholder="User..." />
+                            <p style="color:red;">User is null / or invalid (It should start with a letter). Fix it!</p>
+                            <br>
+
+                            <label for="password">Password:</label>
+                            <input type="password" id="password" name="password" class="fields" placeholder="Password..." />
+                            <p style="color:red;">Password is null. Fix it!</p>
 
                             <!--
                             <label for="phone">Phone:</label>
@@ -60,40 +67,27 @@
                             <p id="phone_error">Phone is null. Fix it !</p>
                             <br>
                             -->
-
-                            <label for="needs">Tell us your needs:</label>
-                            <textarea placeholder="Enter your individual / company needs..." rows="4" cols="25" id="needs" ></textarea>
                         </fieldset>
-                        <input type="submit" id="sendinfo" value="Send"/>
-                        <input type="reset"  id="reset"    value="Reset"/>
+
+                        <!-- If User is Logged -->
+                        <?php if (isset($_SESSION["User"]) && $_SESSION["User"] != "UserError" ){
+                            ?>
+                            <input type="submit" id="editbtn"   name="command" value="Edit Account"/>
+                            <input type="submit" id="deletebtn" name="command" value="Delete Account"/><?php
+                        //-- If User is not logged
+                        } else { ?>
+                            <input type="submit" id="createbtn" name="command" value="Create Account"/>
+                        <?php
+                        }
+                        ?>
+
+
+                        <br><br>
                     </form>
                 </div>
 
                 <div class="col-4">
-                    <form action="mailto:billipronti@academic.rrc.com" method="GET">
-                        <fieldset>
-                            <legend>Main Info:</legend>
-                            <label for="name">Full Name:</label>
-                            <input type="text" id="name" class="fields" placeholder="Enter your name here..." />
-                            <p id="name_error">Name is null / or invalid (number). Fix it!</p>
-                            <br>
 
-                            <label for="phone">Phone:</label>
-                            <input type="number" id="phone" class="fields" placeholder="Cel number..."/>
-                            <p id="phone_error">Phone is null. Fix it !</p>
-                            <br>
-
-                            <label for="email">Email: </label>
-                            <input type="email" id="email" class="fields" placeholder="Enter your email here..."/>
-                            <p id="email_error">Email is null. Fix it!</p>
-                            <br>
-
-                            <label for="needs">Tell us your needs:</label>
-                            <textarea placeholder="Enter your individual / company needs..." rows="4" cols="25" id="needs" ></textarea>
-                        </fieldset>
-                        <input type="submit" id="sendinfo" value="Send"/>
-                        <input type="reset"  id="reset"    value="Reset"/>
-                    </form>
                 </div>
 
 

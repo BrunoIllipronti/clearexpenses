@@ -2,7 +2,7 @@
     session_start();
     print_r($_POST);
 
-    // Validate User
+//================================================== LOG IN VALIDATIONS ==================================================
 	if (!empty($_POST["login"]) && !empty($_POST["pw"])){
 
 	    //  Validate Login action
@@ -43,6 +43,57 @@
         unset ($_SESSION["User"]);
         header('Location: index.php');
     }
+
+
+//================================================== ACCOUNT VALIDATIONS ==================================================
+    if ( $_POST["command"] == "Edit Account" || $_POST["command"] == "Create Account" ){
+
+
+        $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $lastname  = filter_input(INPUT_POST, 'lastname',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $jobtitle  = filter_input(INPUT_POST, 'jobtitle',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $email     = filter_input(INPUT_POST, 'email',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $user      = filter_input(INPUT_POST, 'user',   FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $pw        = filter_input(INPUT_POST, 'pw',     FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $validation_array = [];
+
+        ##### If first name has numbers or it is null #####
+        if(1 === preg_match('~[0-9]~', $firstname) || is_null($firstname) ){
+            array_push($validation_array, 0);
+        } else {
+            array_push($validation_array, 1);
+        }
+
+        ##### If last name has numbers or it is null #####
+        if(1 === preg_match('~[0-9]~', $lastname) || is_null($lastname) ){
+            array_push($validation_array, 0);
+        } else {
+            array_push($validation_array, 1);
+        }
+
+        ##### Invalid email address #####
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || is_null($email) ) {
+            array_push($validation_array, 0);
+        } else {
+            array_push($validation_array, 1);
+        }
+
+
+        ##### If user starts with number or it is null #####
+        if(is_numeric($user[1]) || is_null($user) ){
+            array_push($validation_array, 0);
+        } else {
+            array_push($validation_array, 1);
+        }
+
+        print_r($validation_array);
+        //header('Location: index.php');
+
+    }
+
+
+
 ?>
 
 <!DOCTYPE html>
