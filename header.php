@@ -9,9 +9,8 @@
         $img = "imgs/user.png";
     }
 
-    print_r($_SESSION["User"] );
-    print_r( $_SESSION["Error"] );
-
+    //print_r($_SESSION["User"] );
+    //print_r( $_SESSION["Error"] );
 
 ?>
 
@@ -31,7 +30,7 @@
             <div class="row header align-items-center">
 
                 <!-- Logo column -->
-                <div class="col-5">
+                <div class="col-4">
                     <a href="index.php">
                         <img src="imgs/logo.png" alt="logo">
                     </a>

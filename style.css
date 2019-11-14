@@ -25,9 +25,9 @@ body {
     background-color: lightblue;
 }
 
-.row input[type=text], input[type=password], input[type=email] {
+.row input[type=text], input[type=password], input[type=email], input[type=tel] {
     background-color: #f8f8f8;
-    width: 130px;
+    width: 180px;
     border-radius: 5px;
 }
 

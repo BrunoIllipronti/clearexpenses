@@ -1,6 +1,16 @@
 <?php
+
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    require 'vendor/autoload.php';
+
+    $email = new PHPMailer(TRUE);
+
     session_start();
     print_r($_POST);
+    echo getcwd();
+    echo file_exists('/vendor/phpmailer/phpmailer/srcPHPMailerAutoload.php');
+
     unset($_SESSION["Error"]);
 
     //================================================== LOG IN VALIDATIONS ==================================================
@@ -111,7 +121,7 @@
 
 
     //================================================== ACCOUNT VALIDATIONS ==================================================
-    if ( $_POST["command"] == "Edit Account" || $_POST["command"] == "Create Account" ) {
+    if ( $_POST["command"] == "Contact") {
 
         //Import PHPMailer classes into the global namespace
         /*
@@ -121,25 +131,34 @@
         require_once 'vendor/autoload.php';
         */
 
-        require 'vendor/phpmailer/phpmailer/srcPHPMailerAutoload.php';
+        $name   = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $tel    = filter_input(INPUT_POST, 'tel',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $email  = filter_input(INPUT_POST, 'email',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $needs  = filter_input(INPUT_POST, 'needs',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $mail = new PHPMailer(true);
+        echo getcwd().'/vendor/phpmailer/phpmailer/src/PHPMailerAutoload.php';
+
+
+        // create a new object
+        $mail = new PHPMailer();
+        // configure an SMTP
+        $mail->isSMTP();
 
         try {
             $mail->isSMTP();
             $mail->Host = 'smtp.mailtrap.io';  //mailtrap SMTP server
             $mail->SMTPAuth = true;
-            $mail->Username = '33b113d3b5d5b8';   //username
-            $mail->Password = 'f69ac72b579588';   //password
-            $mail->Port = 465;                    //smtp port
+            $mail->Username = '33b113d3b5d5b8';   // mailtrap.io username
+            $mail->Password = 'f69ac72b579588';   // mailtrap.io password
+            $mail->Port = 465;                    // smtp port
 
-            $mail->setFrom('noreply@artisansweb.net', 'Artisans Web');
-            $mail->addAddress('sajid@artisansweb.net', 'Sajid');
+            $mail->setFrom($email, $name); // from
+            $mail->addAddress('admin@clearexpenses.net', 'Bruno Illipronti'); // to
 
             $mail->isHTML(true);
 
-            $mail->Subject = 'Mailtrap Email';
-            $mail->Body = 'Hello User, <p>This is a test mail sent through Mailtrap SMTP</p><br>Thanks';
+            $mail->Subject = 'Support - Contact Request';
+            $mail->Body = '===== Clear Expenses =====, <p>'.$needs.'</p><br>Thank you '.$name." / ".$tel;
 
             if (!$mail->send()) {
                 echo 'Message could not be sent.';

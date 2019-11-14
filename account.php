@@ -1,6 +1,11 @@
 <?php
 
-
+    if (isset($_SESSION["User"])){
+        $img = $_SESSION["User"]["imagepath"];
+    }
+    else {
+        $img = "imgs/user.png";
+    }
 
 ?>
 
@@ -135,7 +140,6 @@
         </div>
 
         <?php include 'footer.php';
-
         // When leaving the page... Clean the Error session for Account form
         unset($_SESSION["Error"]);
         ?>
