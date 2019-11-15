@@ -1,9 +1,18 @@
 <?php
-
     session_start();
 
+    // Show message after Creating User / Editing User / Changing Password
+    if ( isset($_SESSION["Success"]) ){
+        echo $_SESSION["Success"];
+    }
+
     if (isset($_SESSION["User"])){
-        $img = $_SESSION["User"]["imagepath"];
+        if( empty($_SESSION["User"]["imagepath"]) ){
+            $img = "imgs/user.png";
+        }
+        else {
+            $img = $_SESSION["User"]["imagepath"];
+        }
     }
     else {
         $img = "imgs/user.png";
@@ -11,6 +20,7 @@
 
     //print_r($_SESSION["User"] );
     //print_r( $_SESSION["Error"] );
+    //print_r( $_SESSION["ErrorPw"] );
 
 ?>
 
@@ -52,8 +62,8 @@
                              <?php
                              } else {
                                 // If User is Valid !  ?>
-                                <p>Welcome <b><?= $_SESSION["User"]["name"]  ?></b> !
-                                <?php $img = $_SESSION["User"]["imagepath"]; ?>
+                                <p>Welcome <b><?= $_SESSION["User"]["firstname"]." ".$_SESSION["User"]["lastname"]  ?></b> !
+                                <?php if( !empty($_SESSION["User"]["imagepath"]) ) { $img = $_SESSION["User"]["imagepath"]; }  ?>
 
                                 <input type="submit" id="loginbtn" name="command" value="Logoff"/></p>
                               <?php

@@ -44,6 +44,12 @@
                     <input type="submit" id="contact" name="command" value="Contact"/>
                 </form>
 
+
+                <?php if (isset($_SESSION["Error"])){ ?>
+                    <p style="color:orange;">
+                        <?php echo $_SESSION["Error"]; }?>
+                    </p>
+
             </div>
             <div class="col-4 map">
                 <form action="mailto:billipronti@academic.rrc.com" method="GET">
@@ -62,6 +68,8 @@
         </div>
     </div>
 
-    <?php include 'footer.php';?>
+    <?php include 'footer.php';
+    unset($_SESSION["Error"]);
+    ?>
 </body>
 </html>
