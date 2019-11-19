@@ -25,7 +25,7 @@
 
             try{
                 require 'connect.php';
-                $query = "SELECT userid, firstname, lastname, visualizationsetting, imagepath FROM users WHERE UserName = '$login' AND Password = '$pw'";
+                $query = "SELECT userid, firstname, jobtitle, email, lastname, visualizationsetting, imagepath FROM users WHERE UserName = '$login' AND Password = '$pw'";
                 $statement = $db->prepare($query); // Returns a PDOStatement object.
                 $statement->execute(); // The query is now executed.
 

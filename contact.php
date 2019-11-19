@@ -46,7 +46,7 @@
 
 
                 <?php if (isset($_SESSION["Error"])){ ?>
-                    <p style="color:orange;">
+                    <p style="color:green;">
                         <?php echo $_SESSION["Error"]; }?>
                     </p>
 

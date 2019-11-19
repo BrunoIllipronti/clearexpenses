@@ -1,24 +1,3 @@
-<?php
-
-/*
-    if (isset($_SESSION["User"])){
-        if( empty($_SESSION["User"]["imagepath"]) ){
-            $img = "imgs/user.png";
-        }
-        else {
-            $img = $_SESSION["User"]["imagepath"];
-        }
-    }
-    else {
-        $img = "imgs/user.png";
-    }
-
-    print_r($_SESSION["User"]);
-*/
-
-
-?>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,6 +9,87 @@
     <body>
         <?php include 'header.php';?>
 
+        <?php
+            function file_upload_path($original_filename, $upload_subfolder_name = 'imgs') {
+                $current_folder = dirname(__FILE__);
+                $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
+
+                // Extract extension from uploaded file
+                $upload_extension = substr(strrchr($original_filename, "."), 1);
+                $allowed_file_extensions = ['jpg', 'png', 'gif', 'jpeg'];
+                $validator = null;
+
+                // Check the file extension list and validate with the upload file extension
+                for($i = 0; $i < count($allowed_file_extensions); $i++){
+                    if($upload_extension != $allowed_file_extensions[$i]){
+                        $validator++;
+                    }
+                    if($validator == 4):
+                        echo "<p style=\"color:red;\">"."File Extension not Valid."."</p>";
+                        return;
+                    endif;
+                }
+
+                // Return the path with filename (if validated correctly)
+                return join(DIRECTORY_SEPARATOR, $path_segments);
+            }
+
+            $image_upload_detected = isset($_FILES['image']) && ($_FILES['image']['error'] === 0);
+
+            if ($image_upload_detected) {
+                $image_filename       = $_FILES['image']['name'];
+                $temporary_image_path = $_FILES['image']['tmp_name'];
+                $new_image_path       = file_upload_path($image_filename);
+
+
+                // If destination folder with file does not exist
+                if(!file_exists($new_image_path)){
+                    // If there is no uploads folder... Create it
+                    if(!is_dir('imgs')){
+                        mkdir('imgs');
+                    }
+                    // Move file from temporary to destination path
+                    if(isset($new_image_path)){
+
+                        // Save Original Copy
+                        move_uploaded_file($temporary_image_path, $new_image_path);
+
+                        try{
+                            require 'connect.php';
+
+                            $path = str_replace(getcwd(), '', $new_image_path);
+                            $path = ltrim( $path, $path[0] );
+
+                            $userid = $_SESSION["User"]["userid"];
+
+                            echo "Testing: ".$userid." and - ".$path;
+
+                            $query = "UPDATE users SET ImagePath = :path WHERE UserId = :userid";
+                            $statement = $db->prepare($query); // Returns a PDOStatement object.
+                            $statement->bindValue(':path',   $path,   PDO::PARAM_STR);
+                            $statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+
+                            // The query is now executed.
+                            $statement->execute();
+                        }
+                        catch (PDOException $e) {
+                            $_SESSION["Success"] = "<script type='text/javascript'>alert('Error when updating the Password: \" . $e->getMessage()');</script>";
+                        }
+
+                        $_SESSION["User"]["imagepath"] = $path;
+
+                        // Refresh page after upload and DB file path update
+                        header("Refresh:0");
+
+                        echo "<p style=\"color:green;\">"."SUCCESS - Upload complete"."</p>";
+                    }
+                }
+                else {
+                    echo "<p style=\"color:red;\">"."File already exists"."</p>";
+                }
+            }
+        ?>
+
         <div class="container">
             <div class="row justify-content-between">
                 <div class="col-4">
@@ -37,12 +97,22 @@
                     <h3>My Account</h3>
                     <img src="<?php echo $img;?>"alt="user" width="170" height="170"><br>
 
+                    <!-- File Upload -->
+                    <?php if (isset($_SESSION["User"])){ ?>
+                        <form method='post' enctype='multipart/form-data'>
+                            <input type='file' name='image' id='image'>
+                            <input type='submit' name='submit' value='Upload Image'>
+                            <br>
+                        </form>
+                    <?php } ?>
+
+
                     <form action="process_post.php" method="post">
                         <fieldset>
                             <legend>Main Info:</legend>
 
                             <label for="name">First Name:</label>
-                            <input type="text" id="firstname" name="firstname" class="fields" placeholder="First Name..." />
+                            <input type="text" id="firstname" name="firstname" class="fields" placeholder="First Name..." <?php if (isset($_SESSION["User"])){ ?>value="<?php echo $_SESSION["User"]["firstname"]; } ?>"  />
                             <?php if ( isset($_SESSION["Error"]) ) {
                                     if ($_SESSION["Error"][0] == 0){
                                         ?><p style="color:red;">First Name is null / or invalid (only letters). Fix it!</p><br><?php
@@ -51,7 +121,7 @@
 
 
                             <label for="lastname">Last Name:</label>
-                            <input type="text" id="lastname" name="lastname" class="fields" placeholder="Last Name..." />
+                            <input type="text" id="lastname" name="lastname" class="fields" placeholder="Last Name..." <?php if (isset($_SESSION["User"])){ ?>value="<?php echo $_SESSION["User"]["lastname"]; } ?>"  />
                             <?php if ( isset($_SESSION["Error"]) ) {
                                 if ($_SESSION["Error"][1] == 0){
                                     ?><p style="color:red;">Last Name is null / or invalid (only letters). Fix it!</p><br><?php
@@ -60,12 +130,12 @@
 
 
                             <label for="title">Job Title: </label>
-                            <input type="text" id="jobtitle" name="jobtitle" class="fields" placeholder="Job Title..."/>
+                            <input type="text" id="jobtitle" name="jobtitle" class="fields" placeholder="Job Title..." <?php if (isset($_SESSION["User"])){ ?>value="<?php echo $_SESSION["User"]["jobtitle"]; } ?>"  />
                             <br><br><br>
 
 
                             <label for="email">Email:</label>
-                            <input type="email" id="email" name="email"  class="fields" placeholder="Email..." />
+                            <input type="email" id="email" name="email"  class="fields" placeholder="Email..." <?php if (isset($_SESSION["User"])){ ?>value="<?php echo $_SESSION["User"]["email"]; } ?>"  />
                             <?php if ( isset($_SESSION["Error"]) ) {
                                 if ($_SESSION["Error"][2] == 0){
                                     ?><p style="color:red;">Email is null / or invalid. Fix it!</p><br><?php
