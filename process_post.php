@@ -8,10 +8,9 @@
 
     session_start();
     print_r($_POST);
-
+    echo '<br/>';
+    echo '<br/>';
     print_r($_SESSION["User"]);
-
-    //unset($_SESSION["Error"]);
 
     //================================================== LOG IN VALIDATIONS ==================================================
 	if (!empty($_POST["login"]) && !empty($_POST["pw"])){
@@ -274,7 +273,6 @@
         }
 
         header('Location: account.php');
-
     }
 
 
@@ -326,6 +324,140 @@
             header('Location: contact.php');
         }
     }
+
+    //================================================== POST MESSAGE VALIDATIONS ==================================================
+    if ( $_POST["command"] == "Send >") {
+
+        $comment   = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $postid    = filter_input(INPUT_POST, 'postid', FILTER_SANITIZE_NUMBER_INT);
+        $userid = $_SESSION["User"]["userid"];
+
+        if (empty($comment)){
+            $_SESSION["Error"] = 'Message can not be null';
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        }
+        else {
+
+            try{
+                require 'connect.php';
+                $query = "INSERT INTO postmessages (PostId, UserId, MessageDate, MessageContent) VALUES ( :postid, :userid, now(), :comment )";
+
+                $statement = $db->prepare($query); // Returns a PDOStatement object.
+                $statement->bindValue(':postid', $postid);
+                $statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+                $statement->bindValue(':comment', $comment);
+
+                // The query is now executed.
+                $statement->execute();
+                header('Location: ' . $_SERVER['HTTP_REFERER']);
+            }
+            catch (PDOException $e) {
+                $_SESSION["Error"] = "<script type='text/javascript'>alert('Error when creating the comment: \" . $e->getMessage()');</script>";
+            }
+
+        }
+    }
+
+    if ( $_POST["command"] == "Delete Comment") {
+
+        $commentid    = filter_input(INPUT_POST, 'messageid', FILTER_SANITIZE_NUMBER_INT);
+
+        try{
+            require 'connect.php';
+            $query = "DELETE FROM postmessages WHERE MessageId = :commentid";
+            $statement = $db->prepare($query); // Returns a PDOStatement object.
+            $statement->bindValue(':commentid', $commentid, PDO::PARAM_INT);
+
+            // The query is now executed.
+            $statement->execute();
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        }
+        catch (PDOException $e) {
+            $_SESSION["Error"] = "<script type='text/javascript'>alert('Error when deleting the comment: \" . $e->getMessage()');</script>";
+        }
+    }
+    //================================================== POST VALIDATIONS ==================================================
+
+    if ( $_POST["command"] == "Update Post") {
+
+        $title    = filter_input(INPUT_POST, 'title',   FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $content  = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $postid   = filter_input(INPUT_POST, 'postid',  FILTER_SANITIZE_NUMBER_INT);
+
+        try{
+            require 'connect.php';
+
+            $query = "UPDATE posts SET Title=:title, PostContent=:content WHERE PostId = :postid";
+            $statement = $db->prepare($query); // Returns a PDOStatement object.
+            $statement->bindValue(':title', $title);
+            $statement->bindValue(':content', $content);
+            $statement->bindValue(':postid', $postid);
+
+            // The query is now executed.
+            $statement->execute();
+            $_SESSION["Error"] = "<script type='text/javascript'>alert('Post Updated with Success!');</script>";
+            header('Location: show.php?id='.$postid);
+        }
+        catch (PDOException $e) {
+            $_SESSION["Error"] = "<script type='text/javascript'>alert('Error when updating the Password: \" . $e->getMessage()');</script>";
+            header('Location: show.php?id='.$postid);
+        }
+
+    }
+
+    if ( $_POST["command"] == "Delete Post") {
+
+        $postid   = filter_input(INPUT_POST, 'postid',  FILTER_SANITIZE_NUMBER_INT);
+
+        try{
+            require 'connect.php';
+            $query = "DELETE FROM posts WHERE PostId = :postid";
+            $statement = $db->prepare($query); // Returns a PDOStatement object.
+            $statement->bindValue(':postid', $postid, PDO::PARAM_INT);
+
+            // The query is now executed.
+            $statement->execute();
+            header('Location: index.php');
+        }
+        catch (PDOException $e) {
+            header('Location: index.php');
+        }
+
+    }
+
+    if ( $_POST["command"] == "Create Post") {
+
+        $title   = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $content   = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $userid = $_SESSION["User"]["userid"];
+
+        // If Title and Post Content are filled
+        if (!empty($content) && !empty($title)){
+
+            try{
+                require 'connect.php';
+                $query = "INSERT INTO posts (UserId, Title, PostDate, PostContent) VALUES ( :userid, :title, now(), :content )";
+
+                $statement = $db->prepare($query); // Returns a PDOStatement object.
+                $statement->bindValue(':userid',  $userid, PDO::PARAM_INT);
+                $statement->bindValue(':title',   $title);
+                $statement->bindValue(':content', $content);
+
+                // The query is now executed.
+                $statement->execute();
+                header('Location: index.php');
+            }
+            catch (PDOException $e) {
+                header('Location: index.php');
+            }
+        }
+        else {
+            $_SESSION["Error"] = 'Post Title or Content can not be null';
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        }
+    }
+
+
 ?>
 
 

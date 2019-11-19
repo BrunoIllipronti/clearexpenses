@@ -21,8 +21,8 @@
         <div class="container">
             <div class="row content_block justify-content-between">
                 <div class="col-7 product_description">
-                    <h3>Main Page</h3>
-                    <img src="imgs/bills.png" alt="bills">
+
+                    <br><img src="imgs/bills.png" alt="bills"><br><br>
                     <p>Go paperless with an integrated solution with all your expenses achieving transparency with real-time reporting.</p>
                     <p>ClearExpenses reduces processing time and boost efficiency.</p>
                     <p>Track and monitor your expenses anywhere with our online data storage.</p>
@@ -74,8 +74,11 @@
                                 <p>
                                     <small>
                                         <?php echo $row["postdate"]?><br>
-                                        <?php echo " By: ".$row["firstname"]." ".$row["lastname"] ?>
-                                        <a href="edit.php?id=<?php echo $row["postid"]?>">edit</a>
+                                        <?php echo "Posted By: "?><b><?php echo $row["firstname"]." ".$row["lastname"] ?></b>
+
+                                        <?php if (isset($_SESSION["User"])){ if($_SESSION["User"]["userid"] == "1" || $_SESSION["User"]["userid"] == $row["userid"]){  ?>
+                                            <a href="edit.php?id=<?php echo $row["postid"]?>">edit</a>
+                                        <?php }} ?>
                                     </small>
                                 </p>
 
@@ -100,7 +103,7 @@
                         endwhile;
                     }   ?>
 
-                    <a class="header_link" href="create.php" >New Post</a>
+                    <?php if (isset($_SESSION["User"])){ ?><a class="header_link" href="create.php" >New Post</a> <?php } ?>
                 </div>
             </div>
         </div>
