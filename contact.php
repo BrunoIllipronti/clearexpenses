@@ -40,8 +40,8 @@
                         <textarea placeholder="Enter your individual / company needs..." rows="4" cols="25" id="needs" name="needs" ></textarea>
 
                     </fieldset>
-                    <input type="reset"  id="reset"    value="Reset"/>
-                    <input type="submit" id="contact" name="command" value="Contact"/>
+                    <input type="reset"  class="button" id="reset"    value="Reset"/>
+                    <input type="submit" class="button" id="contact" name="command" value="Contact"/>
                 </form>
 
 

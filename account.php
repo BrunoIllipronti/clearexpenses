@@ -95,13 +95,13 @@
                 <div class="col-4">
 
                     <h3>My Account</h3>
-                    <img src="<?php echo $img;?>"alt="user" width="170" height="170"><br>
+                    <img src="<?php echo $img;?>" alt="user" style="border-radius: 5%; border: 2px solid black;" width="170" height="170"><br>
 
                     <!-- File Upload -->
                     <?php if (isset($_SESSION["User"])){ ?>
                         <form method='post' enctype='multipart/form-data'>
                             <input type='file' name='image' id='image'>
-                            <input type='submit' name='submit' value='Upload Image'>
+                            <input type='submit' class="button" name='submit' value='Upload Image'>
                             <br>
                         </form>
                     <?php } ?>

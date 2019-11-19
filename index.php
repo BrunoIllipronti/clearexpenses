@@ -34,20 +34,20 @@
                             <th>Services</th>
                         </tr>
                         <tr>
-                            <td>Financial Consultancy</td>
-                            <td>We have partnerships and we can offer support for financial issues, investments and much more.</td>
+                            <td><b>Financial Consultancy</b></td>
+                            <td><b>We have partnerships and we can offer support for financial issues, investments and much more.</b></td>
                         </tr>
                         <tr>
-                            <td>Tax Return Assistance</td>
-                            <td>Based on your expenses, you can ask for our support for 2020 Tax Return.</td>
+                            <td><b>Tax Return Assistance</b></td>
+                            <td><b>Based on your expenses, you can ask for our support for 2020 Tax Return.</b></td>
                         </tr>
                         <tr>
-                            <td>Customized Reports</td>
-                            <td>Customized reports for organization / individuals.</td>
+                            <td><b>Customized Reports</b></td>
+                            <td><b>Customized reports for organization / individuals.</b></td>
                         </tr>
                         <tr>
-                            <td>Data Integration</td>
-                            <td>ClearExpenses can integrate your expense report with your ERP system.</td>
+                            <td><b>Data Integration</b></td>
+                            <td><b>ClearExpenses can integrate your expense report with your ERP system.</b></td>
                         </tr>
                     </table>
 
@@ -60,7 +60,7 @@
                     </ul>
                 </div>
 
-                <div class="col-4 posts">
+                <div class="col-4 posts" style="background-color:whitesmoke;">
                     <?php
                     if ($statement->rowCount() > 0){
                         $i = 0;
@@ -100,7 +100,7 @@
                         endwhile;
                     }   ?>
 
-                    <a href="create.php" >New Post</a>
+                    <a class="header_link" href="create.php" >New Post</a>
                 </div>
             </div>
         </div>

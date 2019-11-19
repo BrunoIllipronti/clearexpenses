@@ -52,9 +52,9 @@
                     <h1><?php echo $row["title"] ?></h1>
                         <p>
                             <small>
-                                <?php echo $row["postdate"]." | Posted By: "?> <b><?php echo $row["firstname"]." ".$row["lastname"] ?> </b>
+                                <?php echo "Published on: ".$row["postdate"]." | Posted By: "?> <b><?php echo $row["firstname"]." ".$row["lastname"] ?> </b>
                             </small>
-                            <img src="<?php echo $row["imagepath"];?>" alt="user" width="45" height="45">
+                            <img src="<?php echo $row["imagepath"];?>" style="border-radius: 50%;" lt="user" width="45" height="45">
                         </p>
                         <div class='postcontent'>
                             <?php echo $row["postcontent"] ?>
@@ -76,25 +76,18 @@
                     <?php
                     if ($statement2->rowCount() > 0){
                         while ($messagerow = $statement2->fetch()):  ?>
-                            <p>
-                                <small>
-                                    <?php echo $messagerow["messagedate"]?><br>
-                                    <?php echo " By: ".$messagerow["firstname"]." ".$messagerow["lastname"] ?>
-                                    <a href="edit.php?id=<?php echo $messagerow["postid"]?>">edit</a>
-                                </small>
-                            </p>
+                            <small>
+                                <p>
+                                    <img src="<?php echo $messagerow["imagepath"];?>" style="border-radius: 50%;" alt="user" width="35" height="35">
 
-                            <div class='blog_content'>
-                                <?php if (strlen($messagerow["messagecontent"]) > 200){
-                                    echo substr($messagerow["messagecontent"],1,200); ?>
-                                    <p>...
-                                        <a href="show.php?id=<?php echo $messagerow["postid"]?>">Read more</a>
-                                    </p>
-                                    <?php
-                                } else {
-                                    echo $messagerow["messagecontent"];
-                                }?>
-                            </div>
+                                        <b><?php echo $messagerow["firstname"]." ".$messagerow["lastname"];?></b>
+                                        <?php echo "(".$messagerow["messagedate"]."): " ?>
+                                        <?php echo $messagerow["messagecontent"]; ?>
+                                        <a href="edit.php?id=<?php echo $messagerow["postid"]?>">delete</a>
+                                </p>
+                            </small>
+
+
                         <?php
                         endwhile;
                     }

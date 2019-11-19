@@ -18,8 +18,43 @@ body {
     box-shadow: 0 0 18px gray;
 }
 
+
+.button {
+    background: #0066A2;
+    color: white;
+    border-style: outset;
+    border-color: #0066A2;
+    height: 30px;
+    width: 120px;
+    font: bold 15px arial, sans-serif;
+    text-shadow:none;
+}
+
+.button:hover {
+    background-color: #008CBA;
+    color: white;
+    opacity: 1
+}
+
 /* ####################### BEGIN OF HEADER ####################### */
 .row .header_link {  padding-left: 50px; }
+
+.header_link:link, .header_link:visited {
+    font: bold 12px arial, sans-serif;
+    text-decoration: none;
+    background-color: #008CBA;
+    color: white;
+    padding: 3px 10px 3px 15px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    text-align: center;
+}
+
+.header_link:hover, .header_link:active {
+    background-color: #333333;
+}
 
 .header, .menu {
     background-color: lightblue;
@@ -68,9 +103,12 @@ footer li a{  text-decoration: none;  color: #FFF8DC;  }
 
 /* Main container */
 .container {
-    border-right: 1px solid;
+    border: 3px ridge rgba(28,110,164,0.75);
+    outline: 3px ridge rgba(28,110,164,0.75);
+    outline-offset: 0px;
+    /*border-right: 1px solid;
     border-left: 1px solid;
-    border-top: 1px solid;
+    border-top: 1px solid;*/
 }
 
 .content_block {

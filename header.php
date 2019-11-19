@@ -86,7 +86,7 @@
                 <!-- Form column -->
                 <div class="col-1 align-self-end">
                     <a href="account.php">
-                        <img src="<?php echo $img;?>" alt="user" width="45" height="45">
+                        <img src="<?php echo $img;?>" style="border-radius: 20%; border: 1px solid navy;" alt="user" width="45" height="45">
                     </a>
                 </div>
 
