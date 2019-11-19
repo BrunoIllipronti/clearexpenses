@@ -14,12 +14,11 @@
 	// Get select results (it will be 1 row based on id)
 	$row = $statement->fetch();
 
-
     // Get messages
     $message_query = "SELECT u.firstname, u.lastname, u.imagepath, u.userid, p.postid, m.messageid, m.messagedate, m.messagecontent FROM postmessages m 
                       INNER JOIN users u ON m.UserId = u.UserId 
                       INNER JOIN posts p ON p.PostId = m.PostId
-                      WHERE m.postid = :id ORDER BY p.postdate DESC";
+                      WHERE m.postid = :id ORDER BY m.messagedate DESC";
     $statement2 = $db->prepare($message_query); // Returns a PDOStatement object.
     $statement2->bindValue(':id', $id, PDO::PARAM_INT);
     $statement2->execute(); // The query is now executed.
@@ -43,9 +42,16 @@
             <div class="col-lg-10 contact_form">
 
                 <ul class="list-inline list-pipe">
-                    <li><a href="index.php" >Home</a></li>
-                    <li><a href="create.php" >New Post</a></li>
-                    <li><a href="edit.php?id=<?php echo $row["postid"]?>">Edit Post</a></li>
+                    <li><a href="index.php">Home</a></li>
+
+                    <!-- Enable Delete option if it is Admin or the respective User for that comment -->
+                    <?php if (isset($_SESSION["User"])){ if($_SESSION["User"]["userid"] == "1" || $_SESSION["User"]["userid"] == $row["userid"]){  ?>
+                        <li><a href="edit.php?id=<?php echo $row["postid"]?>">Edit Post</a></li>
+                    <?php }} ?>
+
+                    <?php if (isset($_SESSION["User"])){ ?>
+                        <li><a href="create.php" >New Post</a></li>
+                    <?php } ?>
                 </ul>
 
                 <div class="showpost">
@@ -78,26 +84,53 @@
                         while ($messagerow = $statement2->fetch()):  ?>
                             <small>
                                 <p>
-                                    <img src="<?php echo $messagerow["imagepath"];?>" style="border-radius: 50%;" alt="user" width="35" height="35">
+                                    <form action="process_post.php" method="post">
 
-                                        <b><?php echo $messagerow["firstname"]." ".$messagerow["lastname"];?></b>
-                                        <?php echo "(".$messagerow["messagedate"]."): " ?>
-                                        <?php echo $messagerow["messagecontent"]; ?>
-                                        <a href="edit.php?id=<?php echo $messagerow["postid"]?>">delete</a>
+                                            <img src="<?php echo $messagerow["imagepath"];?>" style="border-radius: 50%;" alt="user" width="35" height="35">
+
+                                            <b><?php echo $messagerow["firstname"]." ".$messagerow["lastname"];?></b>
+                                            <?php echo "(".$messagerow["messagedate"]."): " ?>
+                                            <?php echo $messagerow["messagecontent"]; ?>
+
+                                            <!-- Enable Delete option if it is Admin or the respective User for that comment -->
+                                            <?php if (isset($_SESSION["User"])){ if($_SESSION["User"]["userid"] == "1" || $_SESSION["User"]["userid"] == $messagerow["userid"]){  ?>
+                                                <input type="hidden" name="messageid" value="<?php echo $messagerow["messageid"] ?>"/>
+                                                <input type="submit" style="border-radius: 4px; font-size: 10px;" name="command" value="Delete Comment"/>
+                                            <?php }} ?>
+
+                                    </form>
                                 </p>
                             </small>
-
-
                         <?php
                         endwhile;
-                    }
-                    // End of Message Section ?>
+                    } ?>
+
+                    <?php if(isset($_SESSION["User"])){  ?>
+
+                        <form action="process_post.php" method="post">
+                            <fieldset>
+                                    <textarea name="content" rows="1" cols="60" id="content" placeholder="Place your comment..."></textarea>
+                                    <br>
+                                    <input type="hidden" name="postid" value="<?php echo $row["postid"] ?>"/>
+                                    <input type="submit" class="button" name="command" value="Send >" required/>
+                            </fieldset>
+                        </form>
+
+                        <!-- If message is null -->
+                        <?php if (isset($_SESSION["Error"])){ ?>
+                        <p style="color:red;"> <?php echo $_SESSION["Error"]; }?> </p>
+
+                    <?php } ?>
+
+
+                    <!-- End of Message Section -->
                     </div>
             </div>
         </div>
 
     </div>
-    <?php include 'footer.php'; ?>
+    <?php unset($_SESSION["Error"]);
+    include 'footer.php'; ?>
 </body>
 </html>
 

@@ -28,6 +28,7 @@ body {
     width: 120px;
     font: bold 15px arial, sans-serif;
     text-shadow:none;
+    border-radius: 4px;
 }
 
 .button:hover {
@@ -106,6 +107,7 @@ footer li a{  text-decoration: none;  color: #FFF8DC;  }
     border: 3px ridge rgba(28,110,164,0.75);
     outline: 3px ridge rgba(28,110,164,0.75);
     outline-offset: 0px;
+    font-family: 'Roboto', sans-serif;
     /*border-right: 1px solid;
     border-left: 1px solid;
     border-top: 1px solid;*/

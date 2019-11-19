@@ -32,9 +32,8 @@
             <div class="col-lg-10 contact_form">
 
                 <ul class="list-inline list-pipe">
-                    <li><a href="index.php" >Home</a></li>
+                    <li><a href="show.php?id=<?php echo $row["postid"]?>">Return</a></li>
                     <li><a href="create.php" >New Post</a></li>
-                    <li><a href="edit.php?id=<?php echo $row["postid"]?>">Edit Post</a></li>
                 </ul>
 
                 <div class="showpost">
@@ -47,13 +46,13 @@
 
                                 <label for="content"><h1>Content</h1></label>
                                 <div class='postcontent'>
-                                    <textarea name="content" rows="14" cols="90" id="content"><?php echo $row["postcontent"] ?></textarea>
+                                    <textarea name="content" rows="14" cols="88" id="content"><?php echo $row["postcontent"] ?></textarea>
                                 </div>
 
                             <p>
-                                <input type="hidden" name="id" value="<?php echo $row["postid"] ?>"/>
-                                <input type="submit" name="command" value="Update Post" />
-                                <input type="submit" name="command" value="Delete Post" onclick="return confirm('Are you sure you wish to delete this post?')" />
+                                <input type="hidden" name="postid" value="<?php echo $row["postid"] ?>"/>
+                                <input type="submit" class="button" name="command" value="Update Post" />
+                                <input type="submit" class="button" name="command" value="Delete Post" onclick="return confirm('Are you sure you wish to delete this post?')" />
                             </p>
                         </fieldset>
                     </form>
@@ -62,7 +61,7 @@
             </div>
         </div>
     </div>
-
-    <?php include 'footer.php';    ?>
+    <?php unset($_SESSION["Error"]);
+    include 'footer.php'; ?>
 </body>
 </html>
