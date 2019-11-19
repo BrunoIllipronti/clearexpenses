@@ -117,12 +117,12 @@
 
         if ( $_POST["command"] == "Create Account" ) {
             $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $jobtitle = filter_input(INPUT_POST, 'jobtitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $user = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $pw = filter_input(INPUT_POST, 'pw', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $pw2 = filter_input(INPUT_POST, 'pw2', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $lastname  = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $jobtitle  = filter_input(INPUT_POST, 'jobtitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email     = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $user      = filter_input(INPUT_POST, 'user', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $pw        = filter_input(INPUT_POST, 'pw', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $pw2       = filter_input(INPUT_POST, 'pw2', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $validation_array = [];
 
@@ -180,9 +180,9 @@
         elseif ($_POST["command"] == "Edit Account") {
 
             $firstname = filter_input(INPUT_POST, 'firstname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $lastname = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $jobtitle = filter_input(INPUT_POST, 'jobtitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $lastname  = filter_input(INPUT_POST, 'lastname', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $jobtitle  = filter_input(INPUT_POST, 'jobtitle', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email     = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $validation_array = [];
 
@@ -217,7 +217,6 @@
                     break;
                 }
             }
-
         }
 
 
@@ -282,21 +281,12 @@
     //================================================== ACCOUNT VALIDATIONS ==================================================
     if ( $_POST["command"] == "Contact") {
 
-        //Import PHPMailer classes into the global namespace
-        /*
-        use PHPMailer\PHPMailer\PHPMailer;
-        use PHPMailer\PHPMailer\Exception;
-
-        require_once 'vendor/autoload.php';
-        */
-
         $name   = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $tel    = filter_input(INPUT_POST, 'tel',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email  = filter_input(INPUT_POST, 'email',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $needs  = filter_input(INPUT_POST, 'needs',  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         echo getcwd().'/vendor/phpmailer/phpmailer/src/PHPMailerAutoload.php';
-
 
         // create a new object
         $mail = new PHPMailer();
