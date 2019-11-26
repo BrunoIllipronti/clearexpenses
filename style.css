@@ -217,6 +217,6 @@ tfoot {
 
 .worktab input[type=text], .worktab input[type=password] {
     background-color: #f8f8f8;
-    width: 130px;
+    width: 150px;
     border-radius: 5px;
 }
