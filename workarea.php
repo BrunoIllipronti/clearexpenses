@@ -83,10 +83,8 @@
 
                 </div>
 
-
                 <!-- VISUALIZATION SECTION -->
                 <div class="col-4 posts">
-
                     <div class="row content_block justify-content-between" style="padding-top:27px;">
                         <div id="piechart_3d" style="width: 370px; height: 250px; border: 1px solid; margin: auto;"></div>
                     </div>
@@ -99,10 +97,7 @@
                     <div class="row content_block justify-content-between" style="padding-top:30px;">
                         <div id="columnchart_values" style="width: 370px; height: 250px; border: 1px solid; margin: auto;"></div>
                     </div>
-
-
                 </div>
-
 
             </div>
         </div>
@@ -162,7 +157,6 @@
         chart.draw(data, options);
     }
 </script>
-
 
 <script type="text/javascript">
     google.charts.load("current", {packages:['corechart']});
