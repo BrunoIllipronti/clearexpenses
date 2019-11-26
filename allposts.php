@@ -1,4 +1,5 @@
 <?php
+    require 'authenticate.php';
     require 'connect.php';
     $query = "SELECT u.firstname, u.lastname, u.imagepath, p.postid, p.userid, p.title, p.postdate, p.postcontent FROM posts p 
               INNER JOIN users u ON p.UserId = u.UserId ORDER BY p.postdate DESC";
@@ -39,6 +40,9 @@
 
                                         <?php if (isset($_SESSION["User"])){ if($_SESSION["User"]["userid"] == "1" || $_SESSION["User"]["userid"] == $row["userid"]){  ?>
                                             <a href="edit.php?id=<?php echo $row["postid"]?>">edit</a>
+                                        <?php }} ?>
+                                        <?php if (isset($_SESSION["User"])){ if($_SESSION["User"]["userid"] == "1" || $_SESSION["User"]["userid"] == $row["userid"]){  ?>
+                                            <a href="edit.php?id=<?php echo $row["postid"]?>">delete</a>
                                         <?php }} ?>
                                     </small>
                                 </p>
