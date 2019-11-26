@@ -34,6 +34,9 @@
 
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+        <script src="jquery.tabledit.min.js"></script>
+
         <title>ClearExpense Project - Main Page</title>
 	</head>
 

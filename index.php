@@ -106,9 +106,9 @@
                     <?php if (isset($_SESSION["User"])){ ?><a class="header_link" href="create.php" >New Post</a> <?php } ?>
 
                     <?php if (isset($_SESSION["User"])){
-                        if($_SESSION["User"]["userid"] == "1"){?>
+                      //  if($_SESSION["User"]["userid"] == "1"){?>
                             <a class="header_link" href="allposts.php" >View All Posts</a>
-                    <?php }
+                    <?php //}
                     } ?>
 
                 </div>

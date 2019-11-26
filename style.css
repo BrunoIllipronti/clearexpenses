@@ -183,3 +183,40 @@ footer li a{  text-decoration: none;  color: #FFF8DC;  }
     padding: 5px;
 }
 
+/* ####################### BEGIN OF ACCOUNT PAGE ####################### */
+
+.tab table,
+td {
+    border: 1px solid #333;
+}
+
+.tab thead,
+tfoot {
+    background-color: #333;
+    color: #fff;
+}
+
+.tab input[type=text], .tab input[type=password] {
+    background-color: #f8f8f8;
+    width: 100px;
+    border-radius: 5px;
+}
+
+/* ####################### BEGIN OF WORK AREA ####################### */
+
+.worktab table,
+td {
+    border: 1px solid #333;
+}
+
+.worktab thead,
+tfoot {
+    background-color: #333;
+    color: #fff;
+}
+
+.worktab input[type=text], .worktab input[type=password] {
+    background-color: #f8f8f8;
+    width: 130px;
+    border-radius: 5px;
+}

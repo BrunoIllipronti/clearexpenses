@@ -10,7 +10,16 @@
     print_r($_POST);
     echo '<br/>';
     echo '<br/>';
-    print_r($_SESSION["User"]);
+    //print_r($_SESSION["User"]);
+    echo '<br/>';
+    echo '<br/>';
+    print_r($_GET);
+    $command = filter_input(INPUT_GET, 'command', FILTER_SANITIZE_URL);
+    $firstname = filter_input(INPUT_GET, 'firstname', FILTER_SANITIZE_URL);
+    echo $command;
+    echo $firstname;
+    echo '<br/>';
+    echo '<br/>';
 
     //================================================== LOG IN VALIDATIONS ==================================================
 	if (!empty($_POST["login"]) && !empty($_POST["pw"])){
@@ -455,6 +464,65 @@
             $_SESSION["Error"] = 'Post Title or Content can not be null';
             header('Location: ' . $_SERVER['HTTP_REFERER']);
         }
+    }
+    //================================================== ACCOUNT USER TABLE VALIDATIONS ==================================================
+    if ( $command == "TableUserUpdate") {
+
+        $userid    = filter_input(INPUT_GET, 'userid', FILTER_SANITIZE_NUMBER_INT);
+        $firstname = filter_input(INPUT_GET, 'firstname', FILTER_SANITIZE_URL);
+        $lastname  = filter_input(INPUT_GET, 'lastname', FILTER_SANITIZE_URL);
+        $jobtitle  = filter_input(INPUT_GET, 'jobtitle', FILTER_SANITIZE_URL);
+        $email     = filter_input(INPUT_GET, 'email', FILTER_SANITIZE_URL);
+        $username  = filter_input(INPUT_GET, 'usern', FILTER_SANITIZE_URL);
+        $pw        = filter_input(INPUT_GET, 'pwd', FILTER_SANITIZE_URL);
+
+        echo $userid.$firstname.$lastname.$jobtitle.$email.$username.$pw;
+
+        try{
+            require 'connect.php';
+
+            $query = "UPDATE users SET FirstName=:firstname, LastName=:lastname, JobTitle=:jobtitle, Email=:email, UserName=:username, Password=:pw WHERE UserId = :userid";
+            $statement = $db->prepare($query); // Returns a PDOStatement object.
+            $statement->bindValue(':firstname', $firstname);
+            $statement->bindValue(':lastname', $lastname);
+            $statement->bindValue(':jobtitle', $jobtitle);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':pw', $pw);
+            $statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+
+            // The query is now executed.
+            $statement->execute();
+            $_SESSION["Message"] = "<script type='text/javascript'>alert('User Updated with Success!');</script>";
+            //header('Location: account.php');
+        }
+        catch (PDOException $e) {
+            $_SESSION["Message"] = "<script type='text/javascript'>alert('Error when updating the User: \" . $e->getMessage()');</script>";
+            header('Location: account.php');
+        }
+
+    }
+
+    if ( $command == "TableUserDelete") {
+
+        $userid   = filter_input(INPUT_GET, 'userid',  FILTER_SANITIZE_NUMBER_INT);
+
+        echo "The user ID is: ".$userid;
+
+        try{
+            require 'connect.php';
+            $query = "DELETE FROM users WHERE UserId = :userid";
+            $statement = $db->prepare($query); // Returns a PDOStatement object.
+            $statement->bindValue(':userid', $userid, PDO::PARAM_INT);
+
+            // The query is now executed.
+            $statement->execute();
+            header('Location: account.php');
+        }
+        catch (PDOException $e) {
+            header('Location: account.php');
+        }
+
     }
 
 

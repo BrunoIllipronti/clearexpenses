@@ -10,6 +10,21 @@
         <?php include 'header.php';?>
 
         <?php
+
+            try{
+                require 'connect.php';
+
+                $query_users = "SELECT UserId, FirstName, LastName, JobTitle, Email, UserName, Password FROM Users";
+                $st = $db->prepare($query_users); // Returns a PDOStatement object.
+
+                // The query is now executed.
+                $st->execute();
+            }
+            catch (PDOException $e) { ?>
+                <script type='text/javascript'>alert('Error when updating the Password: \" . $e->getMessage()');</script>;
+            <?php }
+
+            /* -------------------------------- FILE UPLOAD -------------------------------------------*/
             function file_upload_path($original_filename, $upload_subfolder_name = 'imgs') {
                 $current_folder = dirname(__FILE__);
                 $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
@@ -91,7 +106,7 @@
         ?>
 
         <div class="container">
-            <div class="row justify-content-between">
+            <div class="row">
                 <div class="col-4">
 
                     <h3>My Account</h3>
@@ -100,9 +115,9 @@
                     <!-- File Upload -->
                     <?php if (isset($_SESSION["User"])){ ?>
                         <form method='post' enctype='multipart/form-data'>
-                            <input type='file' name='image' id='image'>
+                            <input type='file' name='image' id='image'><br>
                             <input type='submit' class="button" name='submit' value='Upload Image'>
-                            <br>
+
                         </form>
                     <?php } ?>
 
@@ -221,7 +236,71 @@
                             <input type="submit" id="changepw" name="command" value="Change Password"/>
                         </form>
 
-                    <?php } ?>
+                    <?php }
+
+
+                    // User Management
+                    if (isset($_SESSION["User"])){
+                        if($_SESSION["User"]["userid"] == "1"){
+
+                            if ($st->rowCount() > 0){
+                                $i = 0;   ?>
+
+                                <div style="padding-top:80px;">
+                                    <table class="tab">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="8">User Management</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        while ($row = $st->fetch()): ?>
+
+                                            <tr>
+                                                <td>
+                                                    <input type="hidden"   id=<?php echo $row["UserId"]; ?> value=<?php echo $row["UserId"]; ?> />
+                                                    <input type="text"     id=<?php echo $row["FirstName"]; ?> value=<?php echo $row["FirstName"]; ?> />
+                                                </td>
+                                                <td><input type="text"     id=<?php echo $row["LastName"]; ?> value=<?php echo $row["LastName"]; ?> /></td>
+                                                <td><input type="text"     id=<?php echo $row["JobTitle"]; ?> value=<?php echo $row["JobTitle"]; ?> /></td>
+                                                <td><input type="text"     id=<?php echo $row["Email"]; ?>    value=<?php echo $row["Email"]; ?> />   </td>
+                                                <td><input type="text"     id=<?php echo $row["UserName"]; ?> value=<?php echo $row["UserName"]; ?> /></td>
+                                                <td><input type="password" id=<?php echo $row["Password"]; ?> value=<?php echo $row["Password"]; ?> /> </td>
+                                                <td>
+                                                    <a href='' onclick="this.href='process_post.php?' +
+                                                          'userid='+document.getElementById('<?php echo $row["UserId"]; ?>').value+
+                                                          '&command=TableUserUpdate' +
+                                                          '&firstname='+document.getElementById('<?php echo $row["FirstName"]; ?>').value+
+                                                          '&lastname='+document.getElementById('<?php echo $row["LastName"]; ?>').value+
+                                                          '&jobtitle='+document.getElementById('<?php echo $row["JobTitle"]; ?>').value+
+                                                          '&email='+document.getElementById('<?php echo $row["Email"]; ?>').value+
+                                                          '&usern='+document.getElementById('<?php echo $row["UserName"]; ?>').value+
+                                                          '&pwd='+document.getElementById('<?php echo $row["Password"]; ?>').value
+                                                 ">Update</a>
+                                                </td>
+                                                <td>
+                                                    <a href='' onclick="this.href='process_post.php?userid='+document.getElementById('<?php echo $row["UserId"]; ?>').value+'&command=TableUserDelete'">Delete</a>
+                                                </td>
+                                            </tr>
+
+                                            <?php
+                                            $i++;
+                                        endwhile;
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <?php
+                                // If message is null
+                                if (isset($_SESSION["Message"])){ ?>
+                                    <p style="color:red;"> <?php echo $_SESSION["Message"]; ?></p><?php
+                                }?>
+                                <?php
+                            }}
+                    } ?>
+
+
                 </div>
 
             </div>
@@ -232,6 +311,7 @@
         unset($_SESSION["Error"]);
         unset($_SESSION["ErrorPw"]);
         unset($_SESSION["Success"]);
+        unset($_SESSION["Message"]);
         ?>
     </body>
 </html>

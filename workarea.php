@@ -1,11 +1,12 @@
 <?php
     require 'connect.php';
-	$query = "SELECT u.firstname, u.lastname, p.postid, p.userid, p.title, p.postdate, p.postcontent FROM posts p 
-              INNER JOIN users u ON p.UserId = u.UserId ORDER BY p.postdate DESC";
-	$statement = $db->prepare($query); // Returns a PDOStatement object.
-	$statement->execute(); // The query is now executed.
+	$query = "SELECT e.ExpenseId, e.Amount, e.Description, e.ExpenseDate, e.Month, e.Year, u.ImagePath, u.UserId, c.CategoryName
+                FROM expenses e 
+                INNER JOIN expensecategories c ON e.CategoryId = c.CategoryId
+                INNER JOIN users u 			   ON e.UserId = u.UserId;";
+    $st = $db->prepare($query); // Returns a PDOStatement object.
+    $st->execute(); // The query is now executed.
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,52 +21,76 @@
 
         <div class="container">
             <div class="row content_block justify-content-between">
+
                 <div class="col-7 product_description">
                     <h3>Main Page</h3>
-
-                </div>
-
-                <div class="col-4 posts">
                     <?php
-                    if ($statement->rowCount() > 0){
-                        $i = 0;
-                        while ($row = $statement->fetch()):
+                    if ($st->rowCount() > 0){
+                    $i = 0; ?>
 
-                            if($i < 5){?>
-                                <h2 class="decoration">
-                                    <a href="show.php?id=<?php echo $row["postid"]?>"><?php echo $row["title"]?></a>
-                                </h2>
+                    <div style="padding-top:30px; padding-bottom:30px;">
+                        <table class="worktab">
+                            <thead>
+                            <tr>
+                                <th colspan="8">User Management</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            while ($row = $st->fetch()): ?>
 
-                                <p>
-                                    <small>
-                                        <?php echo $row["postdate"]?>
-                                        <a href="edit.php?id=<?php echo $row["postid"]?>">edit</a>
-                                    </small>
-                                </p>
+                                <tr>
+                                    <td>
+                                        <input type="hidden"   id=<?php echo $row["ExpenseId"]; ?> value=<?php echo $row["ExpenseId"]; ?> />
+                                        <input type="text"     id=<?php echo $row["Description"]; ?> value=<?php echo $row["Description"]; ?> />
+                                    </td>
+                                    <td><input type="text"     id=<?php echo $row["Amount"]; ?> value=<?php echo $row["Amount"]; ?> /></td>
+                                    <td><input type="text"     id=<?php echo $row["CategoryName"]; ?> value=<?php echo $row["CategoryName"]; ?> /></td>
+                                    <td><input type="text"     id=<?php echo $row["ExpenseDate"]; ?>    value=<?php echo $row["ExpenseDate"]; ?> />   </td>
+                                    <td><input type="text"     id=<?php echo $row["ImagePath"]; ?> value=<?php echo $row["ImagePath"]; ?> /></td>
+                                    <td>
+                                        <a href='' onclick="this.href='process_post.php?' +
+                                                'expenseid='+document.getElementById('<?php echo $row["ExpenseId"]; ?>').value+
+                                                '&command=ExpenseUpdate' +
+                                                '&description='+document.getElementById('<?php echo $row["Description"]; ?>').value+
+                                                '&amount='+document.getElementById('<?php echo $row["Amount"]; ?>').value+
+                                                '&category='+document.getElementById('<?php echo $row["CategoryName"]; ?>').value+
+                                                '&date='+document.getElementById('<?php echo $row["ExpenseDate"]; ?>').value+
+                                                '&img='+document.getElementById('<?php echo $row["ImagePath"]; ?>').value
+                                                ">Update</a>
+                                    </td>
+                                    <td>
+                                        <a href='' onclick="this.href='process_post.php?expenseid='+document.getElementById('<?php echo $row["ExpenseId"]; ?>').value+'&command=ExpenseDelete'">Delete</a>
+                                    </td>
+                                </tr>
 
-                                <div class='blog_content'>
-                                    <?php if (strlen($row["postcontent"]) > 200){
-                                        echo substr($row["postcontent"],1,200);
-                                        ?>
-                                        <p>...
-                                            <a href="show.php?id=<?php echo $row["postid"]?>">Read more</a>
-                                        </p>
-                                        <?php
-                                    } else {
-                                        echo $row["postcontent"];
-                                    }?>
-                                </div>
                                 <?php
-                            }
-                            $i++;
+                                $i++;
+                            endwhile;
                             ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <?php
+                    // If message is null
+                    if (isset($_SESSION["Message"])){ ?>
+                    <p style="color:red;"> <?php echo $_SESSION["Message"]; ?></p><?php
+                    }
+                    } ?>
 
-                        <?php
-                        endwhile;
-                    }   ?>
-
-                    <a href="create.php" >New Post</a>
                 </div>
+
+
+
+                <div class="col-6 posts">
+
+
+
+                </div>
+
+
+
+
             </div>
         </div>
 
@@ -73,3 +98,24 @@
 
     </body>
 </html>
+
+<script>
+    $(document).ready(function(){
+    $('#editable_table').Tabledit({
+    url:'action.php',
+    columns:{
+    identifier:[0, "userid"],
+    editable:[[1, 'firstname'], [2, 'lastname']]
+    },
+    restoreButton:false,
+    onSuccess:function(data, textStatus, jqXHR)
+    {
+    if(data.action == 'delete')
+    {
+    $('#'+data.id).remove();
+    }
+    }
+    });
+
+    });
+</script>
